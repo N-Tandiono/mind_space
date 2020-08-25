@@ -7,73 +7,170 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simple Todo App</title>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <title>Mind-Space</title>
 </head>
+
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Mind-Space</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
+    <a class="navbar-brand" href="/">Mind-Space</a>
 
-        {% if true  %}
-        <button type="button" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#newItemModal">
+    </button>
+
+    <ul class="navbar-nav ml-auto">
+
+      <script>var authenicated = true</script>
+
+      <div id="button_log-out">
+        <button type="log" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#1newItemModal">
           Log-Out
         </button>
-        {% else %}
-        <button type="button" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#newItemModal">
+      </div>
+      <div id="button_log-in">
+        <button type="log" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#1newItemModal">
           Log-In
         </button>
-        {% endif %}
+      </div>
 
-      </ul>
-    </div>
+      <script>
+        var login = document.getElementById('button_log-out');
+        var logout = document.getElementById('button_log-in');
+        if (authenicated) {
+          login.style.display = 'block';
+          logout.style.display = 'none';
+        } else {
+          login.style.display = 'none';
+          logout.style.display = 'block';
+        }
+
+      </script>
+    </ul>
+
   </nav>
 </body>
+<div class="drop">
 
 
+  <div>
+    <style>
+      add-view-function {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+      }
 
-<body>
+      bin-function {
+        position: fixed;
+        bottom: 25px;
+        left: 25px;
+      }
+    </style>
+
+    <div class="btn-group" role="group" aria-label="Basic example"></div>
+    <add-view-function> <button type="button" class="btn btn-secondary" data-toggle="modal"
+        data-target="1#newItemModal">
+        👀 </add-view-function>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newItemModal"> + </button>
+  </div>
+
+  <bin-function> <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#1newItemModal"> 🗑️
+    </button>
+  </bin-function>
+
+  <div>
+    {% for task in tasks %}
+    <div class="drag">
+      <h6 class="card-header primary-color white-text"> {{task.name}}</h6>
+      <div class="card-body">
+        <p class="card-text">{{task.description}}</p>
+      </div>
+    </div>
+
+    {% endfor %}
+  </div>
+
+
+  <div class="modal fade" id="newItemModal" data-backdrop="static" tabindex="-1" role="dialog"
+    aria-labelledby="newItemModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="newItemModalLabel">Add New Item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/task/" method="post">
+            <div class="form-group">
+              <label for="taskName">Task Name</label>
+              <input name="taskName" type="text" class="form-control" id="taskName" placeholder="Task Name" />
+            </div>
+            <div class="form-group">
+              <label for="taskDescription">Task Description</label>
+              <textarea name="taskDescription" class="form-control" id="taskDescription" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    $('.drop').droppable({
+      tolerance: 'fit'
+    });
+
+    $('.drag').draggable({
+      revert: 'invalid',
+    });
+
+    $('.drag').droppable({
+      greedy: true,
+      tolerance: 'touch',
+      drop: function (event, ui) {
+        ui.draggable.draggable();
+      }
+    });
+  </script>
+
   <style>
-    add-view-function {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
+    .drop {
+      display: inline-block;
+      width: 1920px;
+      height: 1080px;
+      background-color: rgb(228, 222, 222);
     }
 
-    bin-function {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
+    .drag {
+      display: inline-block;
+      width: 250px;
+      height: 150px;
+      border: 1px solid silver;
+      background-color: white;
     }
   </style>
 
-  <div class="btn-group" role="group" aria-label="Basic example"></div>
-  <add-view-function> <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#newItemModal">
-      👀 </add-view-function>
-  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newItemModal"> + </button>
-  </div>
-
-  <bin-function> <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#newItemModal"> 🗑️
-    </button>
-  </bin-function>
-</body>
-
-<!-- Javascript support for bootstrap -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-  integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 
-</body>
+
+  <!-- Javascript support for bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
 
 </html>
