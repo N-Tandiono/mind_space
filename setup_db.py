@@ -1,12 +1,12 @@
 from app import app, db
-from app.models import Task
+from app.models import Note
 
 db.drop_all()
 db.create_all()
 
-tasks = []
+notes = []
 
-for task in tasks:
-    new_task = Task(name=task, description='')
-    db.session.add(new_task)
+for note in notes:
+    new_note = Note(name=note, colour = grey, user = admin, important = 'True', description='')
+    db.session.add(new_note)
 db.session.commit()
