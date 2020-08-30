@@ -15,8 +15,8 @@ def add_item():
     # Get data from form fields taskName and taskDescription
     noteName = request.form.get('taskName')
     noteDescription = request.form.get('taskDescription')
-    important = request.form.get('taskimportant')
-
+    noteImportant = request.form.get('taskImportant')
+    noteColour = request.form.get('taskColour')
     # if not taskName:
     #     print("No TaskName!")
     #     return redirect(url_for('index'))
@@ -26,7 +26,7 @@ def add_item():
     #     return redirect(url_for('index'))
 
     # Put data into a new Task item 
-    new_item = Note(name=noteName, description=noteDescription, important = important)
+    new_item = Note(name=noteName, description=noteDescription, important = noteImportant, colour = noteColour)
     
     # Add and commit the changes to the database
     db.session.add(new_item)
