@@ -32,3 +32,24 @@ def add_item():
     db.session.add(new_item)
     db.session.commit()
     return redirect(url_for('index'))
+
+# UPDATE COORDINATES
+@app.route('/notes/update/<int:id1>/<int:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
+def update_item(id1 = "current", xcoord = "xcoord", ycoord = "ycoord"):
+    print("WE ARE GONNA UPDATE!")
+    print(id1)
+    print(xcoord)
+    print(ycoord)
+
+
+    return redirect(url_for('index'))
+
+# DELETE
+@app.route('/notes/delete/<int:id2>/<int:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
+def delete_item(id2 = "current", xcoord = "xcoord", ycoord = "ycoord"):
+    print("WE ARE DELETEING!")
+    print(id1)
+    toRemove = Note.query.filter_by(id = 1).first()
+    db.session.delete(delete)
+    db.session.commit
+    return redirect(url_for('index'))

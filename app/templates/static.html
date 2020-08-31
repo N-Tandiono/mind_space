@@ -70,21 +70,24 @@
 
   <!-- Delete box (Bottom Left) -->
   <bin-function>
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#1newItemModal"> 🗑️ </button>
+    <button type="button" class="btn btn-danger"> 🗑️ </button>
   </bin-function>
 
   <!-- Create the boxes with messages extracted from database -->
   <!-- Location of boxes needs to be saved into database-->
   <div>
     {% for note in notes %}
+
+    {% print(name) %}
     <div class="message_box">
       <h6 class="card-header primary-color white-text" style="text-align:left;">
         {% if note.name == '' %}
-        <span style="opacity:0;">Fill</span> 
+        <span style="opacity:0;">Fill</span>
         {% else %}
         {{note.name}}
+
         {% endif %}
-        
+
         <span style="float:right;">
           {% if note.important is not none %}
           ⭐
@@ -93,13 +96,13 @@
       </h6>
 
       <div class="card-body">
-        
+
         <p class="card-text">
           {% if note.description == '' %}
-        <span style="opacity:0;">Fill</span> 
-        {% else %}
-        {{note.description}}
-        {% endif %}
+          <span style="opacity:0;">Fill</span>
+          {% else %}
+          {{note.description}}
+          {% endif %}
         </p>
       </div>
     </div>
@@ -158,11 +161,13 @@
 <!-- Dragging the box functions -->
 <script>
   $('.workspace').droppable({
-    tolerance: 'fit'
+    tolerance: 'fit',
   });
 
   $('.message_box').draggable({
+    stop: test,
     revert: 'invalid',
+
   });
 
   $('.message_box').droppable({
@@ -172,9 +177,59 @@
       ui.draggable.draggable();
     }
   });
+
+  function test(e) {
+    var coordX = Math.round(e.pageX - $(this).offset().left)
+    var coordY = Math.round(e.pageY - $(this).offset().top)
+    // alert("Changing coords to " + coordX + ' , ' + coordY );
+    id = '1'
+    // Temporary fix for negative
+    if (coordX < 0 || coordY < 0) {
+      alert('Please drag within the provided canvas')
+    }
+    else {
+      redirectPost('/notes/update/' + id + '/' + coordX + '/' + coordY + '/')
+
+      console.log("hide")
+      if (bin) {
+        this.style.display = 'none'
+        id = '1'
+        redirectPost('/notes/delete/' + id + '/' + coordX + '/' + coordY + '/')
+      }
+    }
+  };
+
+  bin = false
+  $(document).ready(function () {
+    $("bin-function").hover(function () {
+      bin = true
+      console.log("BIN")
+    }, function () {
+      bin = false
+      console.log("DONT BIN")
+    });
+  });
+
+  // https://stackoverflow.com/questions/19064352/how-to-redirect-through-post-method-using-javascript/27766998
+  function redirectPost(url, data) {
+    var form = document.createElement('form');
+    document.body.appendChild(form);
+    form.method = 'post';
+    form.action = url;
+    for (var name in data) {
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = data[name];
+      form.appendChild(input);
+    }
+    form.submit();
+  }
+  //
+  
 </script>
 
-<!-- Will move to style.css (Format)-->>
+<!-- Will move to style.css (Format)-->
 <style>
   add-view-function {
     position: fixed;

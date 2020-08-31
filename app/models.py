@@ -22,3 +22,9 @@ class Note(db.Model):
 
     # Store the message description
     description = db.Column(db.String(26))
+
+    # Store the xCoordinate
+    xCoordinate = db.Column(db.Integer, primary_key=False)
+
+    # Store the yCoordinate
+    yCoordinate = db.Column(db.Integer, primary_key=False)
