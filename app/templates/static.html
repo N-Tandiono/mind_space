@@ -73,19 +73,49 @@
     <button type="button" class="btn btn-danger"> 🗑️ </button>
   </bin-function>
 
+  <style>
+    .message_colour {
+      --color: white;
+    }
+  </style>
+
   <!-- Create the boxes with messages extracted from database -->
   <!-- Location of boxes needs to be saved into database-->
   <div>
     {% for note in notes %}
+    <script>
+      if ("{{note.colour}}" == "Grey") {
+        document.documentElement.style.setProperty('--color', '#' + 'C0C0C0');
+        console.log("Grey")
+      }
+      else if ("{{note.colour}}" == "Blue") {
+        document.documentElement.style.setProperty('--color', '#' + '99CCFF');
+        console.log("BLUE")
+      }
+      else if ("{{note.colour}}" == "Red") {
+        document.documentElement.style.setProperty('--color', '#' + '800000');
+        console.log("RED")
+      }
+      else if ("{{note.colour}}" == "Green") {
+        document.documentElement.style.setProperty('--color', '#' + '99CC00');
+      }
+      else if ("{{note.colour}}" == "Yellow") {
+        document.documentElement.style.setProperty('--color', '#' + 'FFFF99');
+        console.log("YERLLOw")
+      }
+      else {
+        document.documentElement.style.setProperty('--color', '#' + '000000');
+      }
+      
+    </script>
 
-    {% print(name) %}
-    <div class="message_box">
-      <h6 class="card-header primary-color white-text" style="text-align:left;">
+
+    <div class="message_box" id={{note.name}}>
+      <h6 class="card-header primary-color" style="text-align:left; background-color: var(--color);" id={{note.name}}>
         {% if note.name == '' %}
         <span style="opacity:0;">Fill</span>
         {% else %}
         {{note.name}}
-
         {% endif %}
 
         <span style="float:right;">
@@ -188,13 +218,19 @@
       alert('Please drag within the provided canvas')
     }
     else {
-      redirectPost('/notes/update/' + id + '/' + coordX + '/' + coordY + '/')
+      // redirectPost('/notes/update/' + id + '/' + coordX + '/' + coordY + '/')
 
       console.log("hide")
       if (bin) {
         this.style.display = 'none'
-        id = '1'
-        redirectPost('/notes/delete/' + id + '/' + coordX + '/' + coordY + '/')
+        hiddenElements = $(':hidden');
+        for (const [key, object] of Object.entries(hiddenElements)) {
+          if (key == 15) {
+            toRemove = `${object.id}`
+            console.log(Object.entries(hiddenElements))
+            redirectPost('/notes/delete/' + toRemove + '/' + coordX + '/' + coordY + '/')
+          }
+        }
       }
     }
   };
@@ -226,7 +262,7 @@
     form.submit();
   }
   //
-  
+
 </script>
 
 <!-- Will move to style.css (Format)-->
@@ -256,6 +292,8 @@
     height: 150px;
     border: 1px solid silver;
     background-color: white;
+    top: noteTop;
+    left: noteLeft;
   }
 </style>
 

@@ -7,6 +7,8 @@ Note = models.Note
 def index():
     title = 'Mind-Space'
     notes = Note.query.all()
+    # for note in notes:
+    #     print(note.colour)
     return render_template("static.html", title=title, notes = notes)
 
 # POST (Forms)
@@ -16,7 +18,7 @@ def add_item():
     noteName = request.form.get('taskName')
     noteDescription = request.form.get('taskDescription')
     noteImportant = request.form.get('taskImportant')
-    noteColour = request.form.get('taskColour')
+    noteColour = request.form.get('Pick a Colour')
     # if not taskName:
     #     print("No TaskName!")
     #     return redirect(url_for('index'))
@@ -24,7 +26,6 @@ def add_item():
     # if not taskDescription:
     #     print("No DESCRIPTION!")
     #     return redirect(url_for('index'))
-
     # Put data into a new Task item 
     new_item = Note(name=noteName, description=noteDescription, important = noteImportant, colour = noteColour)
     
@@ -45,11 +46,10 @@ def update_item(id1 = "current", xcoord = "xcoord", ycoord = "ycoord"):
     return redirect(url_for('index'))
 
 # DELETE
-@app.route('/notes/delete/<int:id2>/<int:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
-def delete_item(id2 = "current", xcoord = "xcoord", ycoord = "ycoord"):
+@app.route('/notes/delete/<string:name>/<int:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
+def delete_item(name = "current", xcoord = 0, ycoord = 0):
     print("WE ARE DELETEING!")
-    print(id1)
-    toRemove = Note.query.filter_by(id = 1).first()
-    db.session.delete(delete)
-    db.session.commit
+    toRemove = Note.query.filter_by(name = name).first()
+    db.session.delete(toRemove)
+    db.session.commit()
     return redirect(url_for('index'))
