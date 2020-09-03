@@ -24,7 +24,7 @@ class Note(db.Model):
     description = db.Column(db.String(26))
 
     # Store the xCoordinate
-    xCoordinate = db.Column(db.Integer, primary_key=False)
+    xCoordinate = db.Column(db.Float, primary_key=False)
 
     # Store the yCoordinate
-    yCoordinate = db.Column(db.Integer, primary_key=False)
+    yCoordinate = db.Column(db.Float, primary_key=False)

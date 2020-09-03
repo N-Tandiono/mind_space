@@ -21,27 +21,27 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- Top Right Brand -->
     <a class="navbar-brand" href="/">Mind-Space</a> </button>
-    <ul class="navbar-nav ml-auto">
-      <!-- Nav-Bar Login / Logout -->
+    <!-- <ul class="navbar-nav ml-auto">
+      Nav-Bar Login / Logout
       <script>
         var authenicated = true
       </script>
 
-      <!-- Logout Button -->
+      Logout Button
       <div id="button_log-out">
         <button type="log" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#1newItemModal">
           Log-Out
         </button>
       </div>
 
-      <!-- Login Button -->
+      Login Button
       <div id="button_log-in">
         <button type="log" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#1newItemModal">
           Log-In
         </button>
       </div>
 
-      <!-- Check which button to hide/show -->
+      Check which button to hide/show
       <script>
         var login = document.getElementById('button_log-out');
         var logout = document.getElementById('button_log-in');
@@ -54,7 +54,7 @@
         }
 
       </script>
-    </ul>
+    </ul> -->
   </nav>
 </body>
 
@@ -62,15 +62,15 @@
 <div class="workspace">
   <div>
     <div class="btn-group" role="group" aria-label="Basic example"></div>
-    <add-view-function> <button type="button" class="btn btn-secondary" data-toggle="modal"
-        data-target="1#newItemModal">
+    <add-view-function> <button type="button" class="btn btn-secondary" style="height:65px; width:75px">
         👀 </add-view-function>
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newItemModal"> + </button>
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newItemModal"
+      style="height:65px; width:75px"> + </button>
   </div>
 
   <!-- Delete box (Bottom Left) -->
   <bin-function>
-    <button type="button" class="btn btn-danger"> 🗑️ </button>
+    <button type="button" class="btn btn-danger" style="height:65px; width:75px"> 🗑️ </button>
   </bin-function>
 
   <style>
@@ -83,35 +83,9 @@
   <!-- Location of boxes needs to be saved into database-->
   <div>
     {% for note in notes %}
-    <script>
-      if ("{{note.colour}}" == "Grey") {
-        document.documentElement.style.setProperty('--color', '#' + 'C0C0C0');
-        console.log("Grey")
-      }
-      else if ("{{note.colour}}" == "Blue") {
-        document.documentElement.style.setProperty('--color', '#' + '99CCFF');
-        console.log("BLUE")
-      }
-      else if ("{{note.colour}}" == "Red") {
-        document.documentElement.style.setProperty('--color', '#' + '800000');
-        console.log("RED")
-      }
-      else if ("{{note.colour}}" == "Green") {
-        document.documentElement.style.setProperty('--color', '#' + '99CC00');
-      }
-      else if ("{{note.colour}}" == "Yellow") {
-        document.documentElement.style.setProperty('--color', '#' + 'FFFF99');
-        console.log("YERLLOw")
-      }
-      else {
-        document.documentElement.style.setProperty('--color', '#' + '000000');
-      }
-      
-    </script>
 
-
-    <div class="message_box" id={{note.name}}>
-      <h6 class="card-header primary-color" style="text-align:left; background-color: var(--color);" id={{note.name}}>
+    <div class="message_box" id={{note.id}} style="top: {{note.yCoordinate}}px; left: {{note.xCoordinate}}px">
+      <h6 class="card-header primary-color" style="text-align:left; background-color: {{note.colour}};" id={{note.id}}>
         {% if note.name == '' %}
         <span style="opacity:0;">Fill</span>
         {% else %}
@@ -209,30 +183,31 @@
   });
 
   function test(e) {
-    var coordX = Math.round(e.pageX - $(this).offset().left)
-    var coordY = Math.round(e.pageY - $(this).offset().top)
-    // alert("Changing coords to " + coordX + ' , ' + coordY );
-    id = '1'
-    // Temporary fix for negative
-    if (coordX < 0 || coordY < 0) {
-      alert('Please drag within the provided canvas')
-    }
-    else {
-      // redirectPost('/notes/update/' + id + '/' + coordX + '/' + coordY + '/')
+    var coordX = $(this).offset().left
+    var coordY = Math.round($(this).offset().top)
 
-      console.log("hide")
-      if (bin) {
-        this.style.display = 'none'
-        hiddenElements = $(':hidden');
-        for (const [key, object] of Object.entries(hiddenElements)) {
-          if (key == 15) {
-            toRemove = `${object.id}`
-            console.log(Object.entries(hiddenElements))
-            redirectPost('/notes/delete/' + toRemove + '/' + coordX + '/' + coordY + '/')
-          }
+    if (Number.isInteger(coordX)) {
+      coordX += 0.01
+    }
+
+    moving = `${this.id}`
+    console.log(coordX)
+    console.log(coordY)
+    redirectPost('/notes/update/' + moving + '/' + coordX + '/' + coordY + '/')
+
+    console.log("hide")
+    if (bin) {
+      this.style.display = 'none'
+      hiddenElements = $(':hidden');
+      for (const [key, object] of Object.entries(hiddenElements)) {
+        if (key == 9) {
+          toRemove = `${object.id}`
+          console.log(Object.entries(hiddenElements))
+          redirectPost('/notes/delete/' + toRemove + '/' + coordX + '/' + coordY + '/')
         }
       }
     }
+
   };
 
   bin = false
@@ -282,7 +257,8 @@
   .workspace {
     display: inline-block;
     width: 1920px;
-    height: 1080px;
+    height: 880px;
+    /*-200px since due to navigation bar*/
     background-color: rgb(228, 222, 222);
   }
 
@@ -292,8 +268,6 @@
     height: 150px;
     border: 1px solid silver;
     background-color: white;
-    top: noteTop;
-    left: noteLeft;
   }
 </style>
 
