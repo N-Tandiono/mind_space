@@ -20,14 +20,20 @@ def add_item():
 
     xCoordinate = 30
     yCoordinate = 30
-    new_item = Note(name=noteName, description=noteDescription, important=noteImportant, colour=noteColour, xCoordinate=xCoordinate, yCoordinate=yCoordinate)
+
+    count = 0
+    counter = Note.query.all()
+    for thing in counter:
+        count += 1
+    count += 1
+    new_item = Note(id = count, name=noteName, description=noteDescription, important=noteImportant, colour=noteColour, xCoordinate=xCoordinate, yCoordinate=yCoordinate)
     
     # Add and commit the changes to the database
     db.session.add(new_item)
     db.session.commit()
     return redirect(url_for('index'))
 
-# UPDATE COORDINATES
+# Update coordinates
 @app.route('/notes/update/<int:id>/<float:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
 def update_item(id = -1, xcoord = 0, ycoord = 0):
     xcoord = xcoord - (255 * (id - 1))
@@ -39,7 +45,7 @@ def update_item(id = -1, xcoord = 0, ycoord = 0):
 
     return redirect(url_for('index'))
 
-# Delete from 
+# Delete from database
 @app.route('/notes/delete/<int:id>/<float:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
 def delete_item(id = -1, xcoord = 0, ycoord = 0):
 
