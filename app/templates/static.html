@@ -155,6 +155,7 @@
     </div>
   </div>
 </body>
+
 <!-- Dragging the box functions -->
 <script>
   $('.workspace').droppable({
@@ -196,6 +197,7 @@
         // key where id is located
         if (key == 9) {
           toRemove = `${object.id}`
+          console.log(Object.entries(hiddenElements))
           redirectPost('/notes/delete/' + toRemove + '/' + coordX + '/' + coordY + '/')
         }
       }
@@ -228,7 +230,7 @@
     }
     form.submit();
   }
-  //
+
 </script>
 
 <!-- Javascript support for bootstrap -->
