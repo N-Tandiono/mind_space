@@ -2,7 +2,6 @@
 
 <html lang="en">
 
-
 <head>
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -13,155 +12,149 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <title>Mind-Space</title>
-</head>
 
+  <style>
+    add-view-function {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+    }
+
+    bin-function {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+    }
+
+    .workspace {
+      display: inline-block;
+      /* Change width and height according to screen size*/
+      width: 1920px;
+      height: 880px;
+      /*height is -200px due to navigation bar*/
+      background-color: rgb(228, 222, 222);
+    }
+
+    .message_box {
+      display: inline-block;
+      width: 250px;
+      height: 150px;
+      border: 1px solid silver;
+      background-color: white;
+    }
+
+    .message_colour {
+      --color: white;
+    }
+  </style>
+</head>
 
 <body>
   <!-- Navigation bar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- Top Right Brand -->
     <a class="navbar-brand" href="/">Mind-Space</a> </button>
-    <!-- <ul class="navbar-nav ml-auto">
-      Nav-Bar Login / Logout
-      <script>
-        var authenicated = true
-      </script>
-
-      Logout Button
-      <div id="button_log-out">
-        <button type="log" class="btn btn-danger ml-auto" data-toggle="modal" data-target="#1newItemModal">
-          Log-Out
-        </button>
-      </div>
-
-      Login Button
-      <div id="button_log-in">
-        <button type="log" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#1newItemModal">
-          Log-In
-        </button>
-      </div>
-
-      Check which button to hide/show
-      <script>
-        var login = document.getElementById('button_log-out');
-        var logout = document.getElementById('button_log-in');
-        if (authenicated) {
-          login.style.display = 'block';
-          logout.style.display = 'none';
-        } else {
-          login.style.display = 'none';
-          logout.style.display = 'block';
-        }
-
-      </script>
-    </ul> -->
   </nav>
-</body>
 
-<!-- Set up canvas -->
-<div class="workspace">
-  <div>
-    <div class="btn-group" role="group" aria-label="Basic example"></div>
-    <add-view-function> <button type="button" class="btn btn-secondary" style="height:65px; width:75px">
-        👀 </add-view-function>
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newItemModal"
-      style="height:65px; width:75px"> + </button>
-  </div>
+  <!-- Set up canvas -->
+  <div class="workspace">
+    <div>
+      <div class="btn-group" role="group" aria-label="Basic example"></div>
+      <add-view-function> <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newItemModal"
+          style="height:65px; width:75px"> + </button> </add-view-function>
+    </div>
 
-  <!-- Delete box (Bottom Left) -->
-  <bin-function>
-    <button type="button" class="btn btn-danger" style="height:65px; width:75px"> 🗑️ </button>
-  </bin-function>
+    <!-- Delete box (Bottom Left) -->
+    <bin-function>
+      <button type="button" class="btn btn-danger" style="height:65px; width:75px"> 🗑️ </button>
+    </bin-function>
 
-  <style>
-    .message_colour {
-      --color: white;
-    }
-  </style>
+    <!-- Create the boxes with messages extracted from database -->
+    <!-- Location of boxes needs to be saved into database-->
+    <div>
+      {% for note in notes %}
 
-  <!-- Create the boxes with messages extracted from database -->
-  <!-- Location of boxes needs to be saved into database-->
-  <div>
-    {% for note in notes %}
-
-    <div class="message_box" id={{note.id}} style="top: {{note.yCoordinate}}px; left: {{note.xCoordinate}}px">
-      <h6 class="card-header primary-color" style="text-align:left; background-color: {{note.colour}};" id={{note.id}}>
-        {% if note.name == '' %}
-        <span style="opacity:0;">Fill</span>
-        {% else %}
-        {{note.name}}
-        {% endif %}
-
-        <span style="float:right;">
-          {% if note.important is not none %}
-          ⭐
-          {% endif %}
-        </span>
-      </h6>
-
-      <div class="card-body">
-
-        <p class="card-text">
-          {% if note.description == '' %}
+      <div class="message_box" id={{note.id}} style="top: {{note.yCoordinate}}px; left: {{note.xCoordinate}}px">
+        <h6 class="card-header primary-color" style="text-align:left; background-color: {{note.colour}};"
+          id={{note.id}}>
+          {% if note.name == '' %}
           <span style="opacity:0;">Fill</span>
           {% else %}
-          {{note.description}}
+          {{note.name}}
           {% endif %}
-        </p>
+
+          <span style="float:right;">
+            {% if note.important is not none %}
+            ⭐
+            {% endif %}
+          </span>
+        </h6>
+
+        <div class="card-body">
+
+          <p class="card-text">
+            {% if note.description == '' %}
+            <span style="opacity:0;">Fill</span>
+            {% else %}
+            {{note.description}}
+            {% endif %}
+          </p>
+        </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
 
-  <!-- Ask for input from user to be placed into database -->
-  <div class="modal fade" id="newItemModal" data-backdrop="static" tabindex="-1" role="dialog"
-    aria-labelledby="newItemModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
+    <!-- Ask for input from user to be placed into database -->
+    <div class="modal fade" id="newItemModal" data-backdrop="static" tabindex="-1" role="dialog"
+      aria-labelledby="newItemModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
 
-        <div class="modal-body">
+          <div class="modal-body">
 
-          <form action="/notes/" method="POST">
-            <div class="form-group">
-              <label for="taskName">Title </label>
-              <input name="taskName" type="text" maxlength=20 class="form-control" id="taskName" />
-            </div>
+            <form action="/notes/" method="POST">
+              <div class="form-group">
+                <label for="taskName">Title </label>
+                <input name="taskName" type="text" maxlength=20 class="form-control" id="taskName" />
+              </div>
 
-            <div class="form-group">
-              <label for="taskDescription">Description</label>
-              <textarea name="taskDescription" maxlength=25 class="form-control" id="taskDescription"></textarea>
-            </div>
+              <div class="form-group">
+                <label for="taskDescription">Description</label>
+                <textarea name="taskDescription" maxlength=25 class="form-control" id="taskDescription"></textarea>
+              </div>
 
-            <div class="form-group">
-              <label for="taskColour">Pick a Colour</label>
-              <select name="Pick a Colour" class="form-control">
-                <option>Grey</option>
-                <option>Blue</option>
-                <option>Red</option>
-                <option>Green</option>
-                <option>Yellow</option>
-              </select>
-            </div>
+              <div class="form-group">
+                <label for="taskColour">Pick a Colour</label>
+                <select name="Pick a Colour" class="form-control">
+                  <option>Grey</option>
+                  <option>Blue</option>
+                  <option>Orange</option>
+                  <option>Green</option>
+                  <option>Yellow</option>
+                  <option>Red</option>
+                </select>
+              </div>
 
-            <!-- Extra line in forum to make it neater -->
-            <p></p>
+              <!-- Extra line in forum to make it neater -->
+              <p></p>
 
-            <input class="form-group" type="checkbox" id="taskImportant" name="taskImportant" style="text-align:left;">
-            <label class="form-check-label" for="taskImportant">
-              Star
-            </label>
-            <span style="float:right;">
-              <a class="btn btn-danger mr-auto" href="/">Close</a> </button>
-              <button type="submit" class="btn btn-success">Add</button>
-            </span>
+              <input class="form-group" type="checkbox" id="taskImportant" name="taskImportant"
+                style="text-align:left;">
+              <label class="form-check-label" for="taskImportant">
+                Star
+              </label>
+              <span style="float:right;">
+                <a class="btn btn-danger mr-auto" href="/">Close</a> </button>
+                <button type="submit" class="btn btn-success">Add</button>
+              </span>
 
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
+</body>
 <!-- Dragging the box functions -->
 <script>
   $('.workspace').droppable({
@@ -169,7 +162,7 @@
   });
 
   $('.message_box').draggable({
-    stop: test,
+    stop: updateBox,
     revert: 'invalid',
 
   });
@@ -182,27 +175,27 @@
     }
   });
 
-  function test(e) {
+  function updateBox() {
     var coordX = $(this).offset().left
     var coordY = Math.round($(this).offset().top)
 
+    // Change number to a float if int
     if (Number.isInteger(coordX)) {
       coordX += 0.01
     }
 
+    // Send coords to update with id
     moving = `${this.id}`
-    console.log(coordX)
-    console.log(coordY)
     redirectPost('/notes/update/' + moving + '/' + coordX + '/' + coordY + '/')
 
-    console.log("hide")
+    // Check if box should be binned
     if (bin) {
       this.style.display = 'none'
       hiddenElements = $(':hidden');
       for (const [key, object] of Object.entries(hiddenElements)) {
+        // key where id is located
         if (key == 9) {
           toRemove = `${object.id}`
-          console.log(Object.entries(hiddenElements))
           redirectPost('/notes/delete/' + toRemove + '/' + coordX + '/' + coordY + '/')
         }
       }
@@ -210,14 +203,13 @@
 
   };
 
+  // Check if user is hovering delete button
   bin = false
   $(document).ready(function () {
     $("bin-function").hover(function () {
       bin = true
-      console.log("BIN")
     }, function () {
       bin = false
-      console.log("DONT BIN")
     });
   });
 
@@ -237,39 +229,7 @@
     form.submit();
   }
   //
-
 </script>
-
-<!-- Will move to style.css (Format)-->
-<style>
-  add-view-function {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-  }
-
-  bin-function {
-    position: fixed;
-    bottom: 25px;
-    left: 25px;
-  }
-
-  .workspace {
-    display: inline-block;
-    width: 1920px;
-    height: 880px;
-    /*-200px since due to navigation bar*/
-    background-color: rgb(228, 222, 222);
-  }
-
-  .message_box {
-    display: inline-block;
-    width: 250px;
-    height: 150px;
-    border: 1px solid silver;
-    background-color: white;
-  }
-</style>
 
 <!-- Javascript support for bootstrap -->
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

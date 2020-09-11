@@ -7,8 +7,6 @@ Note = models.Note
 def index():
     title = 'Mind-Space'
     notes = Note.query.all()
-    # for note in notes:
-    #     print(note.colour)
     return render_template("static.html", title=title, notes = notes)
 
 # POST (Forms)
@@ -22,14 +20,6 @@ def add_item():
 
     xCoordinate = 30
     yCoordinate = 30
-    # if not taskName:
-    #     print("No TaskName!")
-    #     return redirect(url_for('index'))
-
-    # if not taskDescription:
-    #     print("No DESCRIPTION!")
-    #     return redirect(url_for('index'))
-    # Put data into a new Task item 
     new_item = Note(name=noteName, description=noteDescription, important=noteImportant, colour=noteColour, xCoordinate=xCoordinate, yCoordinate=yCoordinate)
     
     # Add and commit the changes to the database
@@ -39,7 +29,7 @@ def add_item():
 
 # UPDATE COORDINATES
 @app.route('/notes/update/<int:id>/<float:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
-def update_item(id = -1, xcoord = "xcoord", ycoord = "ycoord"):
+def update_item(id = 0, xcoord = 0, ycoord = 0):
     print("WE ARE GONNA UPDATE!")
     xcoord = xcoord - (255 * (id - 1))
     ycoord = ycoord - 80
@@ -47,17 +37,12 @@ def update_item(id = -1, xcoord = "xcoord", ycoord = "ycoord"):
     update.xCoordinate = xcoord
     update.yCoordinate = ycoord
     db.session.commit()
-        
-
-    print(ycoord)
-    print(id)
 
     return redirect(url_for('index'))
 
-# DELETE
+# Delete from 
 @app.route('/notes/delete/<int:id>/<float:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
 def delete_item(id = 0, xcoord = 0, ycoord = 0):
-    print("WE ARE DELETEING!")
 
     toRemove = Note.query.filter_by(id = id).first()
     toCheck = toRemove.id
