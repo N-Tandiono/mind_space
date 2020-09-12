@@ -18,6 +18,21 @@ def add_item():
     noteImportant = request.form.get('taskImportant')
     noteColour = request.form.get('Pick a Colour')
 
+    if noteColour == "Grey":
+        noteColour = "#C0C0C0"
+    elif noteColour == "Blue":
+        noteColour = "#2E86C1"
+    elif noteColour = "Yellow":
+        noteColour = "#F4D03F"
+    elif noteColour = "Orange":
+        noteColour = "#E67E22"
+    elif noteColour = "Red":
+        noteColour = "#E74C3C"
+    elif noteColour = "Green":
+        noteColour = "#58D68D"
+    else:
+        noteColour = "#000000"
+
     # Default spawnpoint for boxes
     xCoordinate = 30
     yCoordinate = 30
