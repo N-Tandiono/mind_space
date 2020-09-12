@@ -22,13 +22,13 @@ def add_item():
         noteColour = "#C0C0C0"
     elif noteColour == "Blue":
         noteColour = "#2E86C1"
-    elif noteColour = "Yellow":
+    elif noteColour == "Yellow":
         noteColour = "#F4D03F"
-    elif noteColour = "Orange":
+    elif noteColour == "Orange":
         noteColour = "#E67E22"
-    elif noteColour = "Red":
+    elif noteColour == "Red":
         noteColour = "#E74C3C"
-    elif noteColour = "Green":
+    elif noteColour == "Green":
         noteColour = "#58D68D"
     else:
         noteColour = "#000000"
