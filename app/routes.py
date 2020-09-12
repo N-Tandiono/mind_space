@@ -18,14 +18,17 @@ def add_item():
     noteImportant = request.form.get('taskImportant')
     noteColour = request.form.get('Pick a Colour')
 
+    # Default spawnpoint for boxes
     xCoordinate = 30
     yCoordinate = 30
 
+    # Find how many entities are in the table and assign id accordingly
     count = 0
     counter = Note.query.all()
     for thing in counter:
         count += 1
     count += 1
+
     new_item = Note(id = count, name=noteName, description=noteDescription, important=noteImportant, colour=noteColour, xCoordinate=xCoordinate, yCoordinate=yCoordinate)
     
     # Add and commit the changes to the database
@@ -36,6 +39,7 @@ def add_item():
 # Update coordinates
 @app.route('/notes/update/<int:id>/<float:xcoord>/<int:ycoord>/', methods=['GET', 'POST'])
 def update_item(id = -1, xcoord = 0, ycoord = 0):
+    # Account for the boxes spawning on top of each other
     xcoord = xcoord - (255 * (id - 1))
     ycoord = ycoord - 80
     update = Note.query.filter_by(id=id).first()
@@ -52,6 +56,7 @@ def delete_item(id = -1, xcoord = 0, ycoord = 0):
     toRemove = Note.query.filter_by(id = id).first()
     toCheck = toRemove.id
     
+    # Find how many entities there are in the table
     count = 0
     counter = Note.query.all()
     for thing in counter:
@@ -59,6 +64,8 @@ def delete_item(id = -1, xcoord = 0, ycoord = 0):
 
     notes = Note.query.all()
     for note in notes:
+        # Shift all elements with a id number larger than the deleted down by 1
+        # Delete last column id 
         if note.id >= toCheck and note.id < count:
             first = Note.query.filter_by(id=note.id).first()
             secondId = note.id + 1
@@ -67,7 +74,7 @@ def delete_item(id = -1, xcoord = 0, ycoord = 0):
             first.description = second.description
             first.important = second.important
             first.colour = second.colour
-            first.xCoordinate = second.xCoordinate
+            first.xCoordinate = second.xCoordinate + 255 # adjust for bug where boxes spawn in same location
             first.yCoordinate = second.yCoordinate
     
     toRemove = Note.query.filter_by(id = count).first()
