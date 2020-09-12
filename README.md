@@ -6,20 +6,20 @@
 * [Setup](#setup)
 
 ## General Information
+Keep organised with a sticky note alternative 😃
 
 ## How to use
-![image](https://user-images.githubusercontent.com/60835426/92433458-82581380-f1e0-11ea-9140-bc24e2137572.png)
-
-Clicking on the green button results in the following:
+### How it looks
+![image](https://user-images.githubusercontent.com/60835426/92992419-2669f380-f52e-11ea-92f6-920079af209e.png)
+### Adding a note
 ![image](https://user-images.githubusercontent.com/60835426/92433492-a61b5980-f1e0-11ea-96e9-58e313e652df.png)
-
-Note boxes are created as shown below:
+### When a note is created
 ![image](https://user-images.githubusercontent.com/60835426/92433583-de229c80-f1e0-11ea-8924-826f73c72dcf.png)
-
-Boxes are draggable and update coordinates in database, so it looks the same when the application is reopened
+### Dragging boxes
+Boxes are draggable and coordinates are updated in the database. This means that it looks the same when the application is reopened <br />  
 ![movingBox](https://user-images.githubusercontent.com/60835426/92434982-90a82e80-f1e4-11ea-9f58-2033b25cc586.gif)
-
-Dragging box and dropping it into the bin will remove the note from the database and screen
+### Deleting boxes
+Dragging box and dropping it into the bin will remove the note from the database and screen <br />  
 ![deleteBox](https://user-images.githubusercontent.com/60835426/92435343-7884df00-f1e5-11ea-868e-4aa9bd9658a8.gif)
 
 
@@ -27,9 +27,11 @@ Dragging box and dropping it into the bin will remove the note from the database
 ```
 click==7.1.2
 Flask==1.1.2
+Flask-SQLAlchemy==2.4.4
 itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
+SQLAlchemy==1.3.19
 Werkzeug==1.0.1
 ```
 ## Setup
