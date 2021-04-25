@@ -11,7 +11,7 @@
 Keep organised with a sticky note alternative 😃
 
 ## Hosted Application Access
-http://mind-space.azurewebsites.net/
+~~http://mind-space.azurewebsites.net/~~
 
 ## Technology Stack
 * Python 3.8
